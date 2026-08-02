@@ -4,11 +4,13 @@ A ChatGPT-like chatbot built in small daily steps.
 
 ## Build log
 - **Day 1** ✅ — Basic chat UI with Streamlit (placeholder responses)
-- **Day 2** ⬜ — Connect a real LLM (Groq API)
+- **Day 2** ✅ — Connect a real LLM (Groq / Llama 3.1)
 - **Day 3** ⬜ — Multi-turn memory / context
 - **Day 4** ⬜ — Polish + deploy
 
 ## Run it locally
+1. Copy `.env.example` to `.env` and paste in your own Groq API key
+2. Install dependencies and run:
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
