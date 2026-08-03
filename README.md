@@ -5,7 +5,7 @@ A ChatGPT-like chatbot built in small daily steps.
 ## Build log
 - **Day 1** ✅ — Basic chat UI with Streamlit (placeholder responses)
 - **Day 2** ✅ — Connect a real LLM (Groq / Llama 3.1)
-- **Day 3** ⬜ — Multi-turn memory / context
+- **Day 3** ✅ — Smarter memory (trimmed history) + clear chat button
 - **Day 4** ⬜ — Polish + deploy
 
 ## Run it locally

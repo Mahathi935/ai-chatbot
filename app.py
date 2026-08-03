@@ -3,18 +3,30 @@ import streamlit as st
 from groq import Groq
 from dotenv import load_dotenv
 
-load_dotenv()  # reads the .env file and loads GROQ_API_KEY into the environment
+load_dotenv()
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 st.set_page_config(page_title="AI Chatbot", page_icon="💬")
 st.title("💬 AI Chatbot")
-st.caption("Day 2: now powered by a real LLM (Groq / Llama 3.1)")
+st.caption("Day 3: smarter memory + clear chat button")
+
+# How many past messages (user+assistant combined) to actually send to the model.
+# Keeps requests fast and avoids hitting the model's context limit on long chats.
+MAX_HISTORY = 20
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hi! I'm your chatbot. Ask me anything."}
     ]
+
+# --- Sidebar: clear chat button ---
+with st.sidebar:
+    if st.button("🗑️ Clear chat"):
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Hi! I'm your chatbot. Ask me anything."}
+        ]
+        st.rerun()
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -27,11 +39,14 @@ if user_input:
     with st.chat_message("user"):
         st.write(user_input)
 
-    # Send the ENTIRE conversation so far to the model, not just the last message.
-    # This is what lets the AI "remember" earlier turns in this chat.
+    # Only send the most recent MAX_HISTORY messages to the model.
+    # Full history still stays in st.session_state.messages so the UI shows everything;
+    # we just trim what we SEND to the API.
+    recent_messages = st.session_state.messages[-MAX_HISTORY:]
+
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
-        messages=st.session_state.messages,
+        messages=recent_messages,
     )
     ai_reply = response.choices[0].message.content
 
