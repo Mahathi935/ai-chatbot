@@ -9,19 +9,28 @@ client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 st.set_page_config(page_title="AI Chatbot", page_icon="💬")
 st.title("💬 AI Chatbot")
-st.caption("Day 3: smarter memory + clear chat button")
+st.caption("Ask me anything — I'll do my best to help.")
 
-# How many past messages (user+assistant combined) to actually send to the model.
-# Keeps requests fast and avoids hitting the model's context limit on long chats.
 MAX_HISTORY = 20
+
+# This tells the model HOW to behave. It's never shown in the chat UI —
+# it's sent to the API on every request as invisible "background instructions."
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": (
+        "You are a friendly, helpful assistant. Keep answers clear and concise. "
+        "If you don't know something, say so honestly instead of guessing."
+    ),
+}
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hi! I'm your chatbot. Ask me anything."}
     ]
 
-# --- Sidebar: clear chat button ---
 with st.sidebar:
+    st.subheader("About")
+    st.write("A simple AI chatbot built with Streamlit + Groq (Llama 3.1).")
     if st.button("🗑️ Clear chat"):
         st.session_state.messages = [
             {"role": "assistant", "content": "Hi! I'm your chatbot. Ask me anything."}
@@ -39,15 +48,16 @@ if user_input:
     with st.chat_message("user"):
         st.write(user_input)
 
-    # Only send the most recent MAX_HISTORY messages to the model.
-    # Full history still stays in st.session_state.messages so the UI shows everything;
-    # we just trim what we SEND to the API.
     recent_messages = st.session_state.messages[-MAX_HISTORY:]
 
-    response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=recent_messages,
-    )
+    # Put the system prompt FIRST, then the recent conversation after it.
+    api_messages = [SYSTEM_PROMPT] + recent_messages
+
+    with st.spinner("Thinking..."):
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=api_messages,
+        )
     ai_reply = response.choices[0].message.content
 
     st.session_state.messages.append({"role": "assistant", "content": ai_reply})

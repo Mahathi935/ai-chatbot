@@ -6,7 +6,13 @@ A ChatGPT-like chatbot built in small daily steps.
 - **Day 1** ✅ — Basic chat UI with Streamlit (placeholder responses)
 - **Day 2** ✅ — Connect a real LLM (Groq / Llama 3.1)
 - **Day 3** ✅ — Smarter memory (trimmed history) + clear chat button
-- **Day 4** ⬜ — Polish + deploy
+- **Day 4** ✅ — System prompt (personality) + deployed live
+
+## Live demo
+👉 (add your Streamlit Cloud link here once deployed)
+
+## Setup notes
+Add your `GROQ_API_KEY` as a secret when deploying (see deployment steps below), not as a plain environment variable in code.
 
 ## Run it locally
 1. Copy `.env.example` to `.env` and paste in your own Groq API key
