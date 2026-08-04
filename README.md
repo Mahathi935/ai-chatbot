@@ -9,7 +9,7 @@ A ChatGPT-like chatbot built with Streamlit and Groq's Llama 3.1 model. It holds
 - Clean, simple chat interface
 
 ## Live demo
-👉 (add your Streamlit Cloud link here once deployed)
+👉 https://ai-chatbot-re5nnbjlyp47hkr877uf4a.streamlit.app/
 
 ## Tech stack
 Python · Streamlit · Groq API
