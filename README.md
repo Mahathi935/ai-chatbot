@@ -9,8 +9,7 @@ A ChatGPT-like chatbot built in small daily steps.
 - **Day 4** ✅ — System prompt (personality) + deployed live
 
 ## Live demo
-👉 (add your Streamlit Cloud link here once deployed)
-
+👉 https://ai-chatbot-re5nnbjlyp47hkr877uf4a.streamlit.app/
 ## Setup notes
 Add your `GROQ_API_KEY` as a secret when deploying (see deployment steps below), not as a plain environment variable in code.
 
